@@ -1,0 +1,5 @@
+.vscode
+*temp*
+Dockerfile
+tt-scraper
+tt-scraper.exe
