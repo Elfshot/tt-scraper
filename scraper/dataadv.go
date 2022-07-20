@@ -37,4 +37,5 @@ func DataAdv() {
 			wg.Done()
 		}(player)
 	}
+	wg.Wait()
 }
