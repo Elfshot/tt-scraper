@@ -26,7 +26,7 @@ func DataAdv() {
 
 	for _, player := range recentPlayers {
 		wg.Add(1)
-		time.Sleep(time.Millisecond * 35)
+		time.Sleep(time.Millisecond * 75)
 		go func(player mongo_m.UsersCollModel) {
 			data, err := tt.Get_DataAdv(player.VrpId)
 			if err != nil {
