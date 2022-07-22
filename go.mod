@@ -3,7 +3,7 @@ module github.com/Elfshot/tt-scraper
 go 1.18
 
 require (
-	github.com/Elfshot/tt-api-wrapper v0.1.5
+	github.com/Elfshot/tt-api-wrapper v0.1.6
 	github.com/go-co-op/gocron v1.15.0
 	go.mongodb.org/mongo-driver v1.9.1
 )
