@@ -11,7 +11,6 @@ import (
 )
 
 func DataAdv() {
-	defer log.Println("DataAdv scraper finished")
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Recovered:", r)
@@ -38,4 +37,5 @@ func DataAdv() {
 		}(player)
 	}
 	wg.Wait()
+	log.Println("DataAdv scraper finished")
 }

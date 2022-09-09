@@ -15,22 +15,22 @@ import (
 var recentPlayers []mongo_m.UsersCollModel
 
 func Players() {
-	defer log.Println("Players scraper finished")
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Recovered:", r)
 		}
 	}()
 
-	recentPlayers = make([]mongo_m.UsersCollModel, 0)
-
 	players, err := tt.GetTotalPlayers()
 	if err != nil {
 		log.Printf("Error getting total players: %+v\n", err)
 		return
 	}
+
+	recentPlayers = make([]mongo_m.UsersCollModel, 0)
 	timeDate := time.Now().UTC()
 	wg := sync.WaitGroup{}
+
 	for _, playerR := range players {
 		var discordId string
 		if playerR.AvatarUrl != "" && strings.HasPrefix(playerR.AvatarUrl, "https://cdn.discordapp.com/avatars/") {
@@ -49,4 +49,5 @@ func Players() {
 		}(playerR)
 	}
 	wg.Wait()
+	log.Println("Players scraper finished")
 }

@@ -67,6 +67,7 @@ func setColls() {
 	}
 	usersCol = setter("users")
 	dataAdvCol = setter("dataadvs")
+	sotdCol = setter("sotd")
 }
 
 func setOpts() {

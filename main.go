@@ -13,13 +13,12 @@ func main() {
 	mongo.Init()
 	ttapi.Init()
 
-	//run players as blocking function to initialize the list of players for dataadv
-	scraper.Players()
-
-	cron := gocron.NewScheduler(time.Local)
+	cron := gocron.NewScheduler(time.UTC)
+	cron.WaitForScheduleAll()
 
 	cron.Every(2).Minutes().Do(scraper.Players)
 	cron.Every(10).Minutes().Do(scraper.DataAdv)
+	cron.Every(1).Day().At("20:11").Do(scraper.Sotd)
 
 	cron.StartBlocking()
 }
