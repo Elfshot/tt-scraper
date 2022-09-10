@@ -8,35 +8,33 @@ import (
 	mongo "github.com/Elfshot/tt-scraper/mongo"
 )
 
-func Sotd(redo ...int) {
+func sotd(redo int) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Recovered:", r)
 		}
 	}()
 
-	sotd, err := tt.Get_Sotd()
+	sotdData, err := tt.Get_Sotd()
 
 	if err != nil {
-		var iter int
-		if len(redo) > 0 {
-			iter = redo[0]
-		} else {
-			iter = 1
-		}
-		if iter >= 6 {
-			log.Printf("Error getting SOTD (Attempts Stopped): %+v\n", iter-1)
+		if redo >= 6 {
+			log.Printf("Error getting SOTD (Attempts Stopped): %+v\n", redo-1)
 			return
 		} else {
-			log.Printf("Error getting SOTD (Attempt %d): \n", iter)
+			log.Printf("Error getting SOTD (Attempt %d): %+v\n", redo, err)
 			time.Sleep(5 * time.Second)
-			Sotd(iter + 1)
+			sotd(redo + 1)
 		}
 		return
 	}
 
 	t := time.Now()
 	date := time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), 0, 0, time.UTC)
-	mongo.UpdateSotd(date, sotd)
+	mongo.UpdateSotd(date, sotdData)
 	log.Println("Sotd Scraper Finished")
+}
+
+func Sotd() {
+	sotd(1)
 }

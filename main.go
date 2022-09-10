@@ -18,7 +18,7 @@ func main() {
 
 	cron.Every(2).Minutes().Do(scraper.Players)
 	cron.Every(10).Minutes().Do(scraper.DataAdv)
-	cron.Every(1).Day().At("20:11").Do(scraper.Sotd)
+	cron.Every(1).Day().At("00:11").Do(scraper.Sotd)
 
 	cron.StartBlocking()
 }
