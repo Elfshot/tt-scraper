@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"time"
 
 	ttapi "github.com/Elfshot/tt-api-wrapper"
@@ -14,6 +15,12 @@ func main() {
 	ttapi.Init()
 
 	cron := gocron.NewScheduler(time.UTC)
+
+	if os.Getenv("DB_TEST") != "" {
+		scraper.Players()
+		scraper.DataAdv()
+		scraper.Sotd()
+	}
 	cron.WaitForScheduleAll()
 
 	cron.Every(2).Minutes().Do(scraper.Players)

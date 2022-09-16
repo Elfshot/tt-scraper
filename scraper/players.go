@@ -2,6 +2,7 @@ package ttScraper
 
 import (
 	"log"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -30,14 +31,24 @@ func Players() {
 	recentPlayers = make([]mongo_m.UsersCollModel, 0)
 	timeDate := time.Now().UTC()
 	wg := sync.WaitGroup{}
+	re, regexErr := regexp.Compile(`[^\w]`)
 
 	for _, playerR := range players {
 		var discordId string
+		searchName := playerR.Name
+
 		if playerR.AvatarUrl != "" && strings.HasPrefix(playerR.AvatarUrl, "https://cdn.discordapp.com/avatars/") {
 			discordId = strings.Split(playerR.AvatarUrl, "/")[4]
 		}
+
+		if regexErr != nil {
+			searchName = playerR.Name
+		} else {
+			searchName = re.ReplaceAllString(playerR.Name, "")
+		}
+
 		player := mongo_m.UsersCollModel{
-			UserName: playerR.Name, LastFound: timeDate, DiscordId: discordId, VrpId: playerR.VrpId,
+			UserName: playerR.Name, SearchName: searchName, LastFound: timeDate, DiscordId: discordId, VrpId: playerR.VrpId,
 		}
 
 		recentPlayers = append(recentPlayers, player)

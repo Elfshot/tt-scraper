@@ -9,6 +9,7 @@ import (
 type UsersCollModel struct {
 	VrpId      uint32    `bson:"vrpId,omitempty,minsize,truncate"`
 	UserName   string    `bson:"userName,omitempty"`
+	SearchName string    `bson:"searchName,omitempty"`
 	DiscordId  string    `bson:"discordId,omitempty"`
 	CountFound uint32    `bson:"countFound,omitempty,minsize,truncate"`
 	FirstFound time.Time `bson:"firstFound,omitempty"`
