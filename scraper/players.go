@@ -62,5 +62,11 @@ func Players(update bool) {
 		}(playerR)
 	}
 	wg.Wait()
-	log.Println("Players scraper finished")
+
+	if update {
+		log.Println("Players scraper finished")
+	} else {
+		log.Println("Players scraper finished (No Update)")
+	}
+
 }

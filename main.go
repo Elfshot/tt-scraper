@@ -26,10 +26,10 @@ func main() {
 	} else {
 		println("Test Functions Start")
 
-		scraper.Players(true)
-		scraper.DataAdv()
-		scraper.Sotd()
-		cron.Every(1).Minutes().Do(scraper.Players, true)
+		// scraper.Players(true)
+		// scraper.DataAdv()
+		// scraper.Sotd()
+		// cron.Every(2).Minutes().Do(scraper.Players, true)
 	}
 
 	cron.StartBlocking()
