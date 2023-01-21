@@ -13,19 +13,24 @@ import (
 func main() {
 	mongo.Init()
 	ttapi.Init()
+	scraper.Init()
 
 	cron := gocron.NewScheduler(time.UTC)
-
-	if os.Getenv("DB_TEST") != "" {
-		scraper.Players()
-		scraper.DataAdv()
-		scraper.Sotd()
-	}
 	cron.WaitForScheduleAll()
 
-	cron.Every(2).Minutes().Do(scraper.Players)
-	cron.Every(10).Minutes().Do(scraper.DataAdv)
-	cron.Every(1).Day().At("00:11").Do(scraper.Sotd)
+	if os.Getenv("DB_TEST") == "" {
+		cron.Every(2).Minutes().Do(scraper.Players, true)
+		cron.Every(10).Minutes().Do(scraper.DataAdv)
+		cron.Every(1).Day().At("00:11").Do(scraper.Sotd)
+
+	} else {
+		println("Test Functions Start")
+
+		scraper.Players(true)
+		scraper.DataAdv()
+		scraper.Sotd()
+		cron.Every(1).Minutes().Do(scraper.Players, true)
+	}
 
 	cron.StartBlocking()
 }

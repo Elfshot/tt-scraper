@@ -15,7 +15,7 @@ import (
 
 var recentPlayers []mongo_m.UsersCollModel
 
-func Players() {
+func Players(update bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Recovered:", r)
@@ -28,12 +28,12 @@ func Players() {
 		return
 	}
 
-	recentPlayers = make([]mongo_m.UsersCollModel, 0)
+	recentPlayers = make([]mongo_m.UsersCollModel, len(players))
 	timeDate := time.Now().UTC()
 	wg := sync.WaitGroup{}
 	re, regexErr := regexp.Compile(`[^\w]`)
 
-	for _, playerR := range players {
+	for i, playerR := range players {
 		var discordId string
 		searchName := playerR.Name
 
@@ -51,11 +51,13 @@ func Players() {
 			UserName: playerR.Name, SearchName: searchName, LastFound: timeDate, DiscordId: discordId, VrpId: playerR.VrpId,
 		}
 
-		recentPlayers = append(recentPlayers, player)
+		recentPlayers[i] = player
 
 		wg.Add(1)
 		go func(playerR tt_m.BaseTotalPlayer) {
-			mongo.UpdateUser(playerR.VrpId, player, timeDate)
+			if update {
+				mongo.UpdateUser(playerR.VrpId, player, timeDate)
+			}
 			wg.Done()
 		}(playerR)
 	}
